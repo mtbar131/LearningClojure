@@ -186,6 +186,23 @@
 ;From the output of above three calls we can see that in 3rd call fast-function
 ;returns the memoized results. The result that was cached during 2nd call
 
+;Partial
+;--------
+;Partial is very powerful keyword. It works just like currying works in haskell
+;Lets say there is a function f which accepts 10 arguments. If you pass f to 
+;partial with only 3 arguments then partial will return a new function which
+;will accept remaining 7 arguments and then do the taks of f.
+;Example
+(defn myFunction [a b c d e f]
+  (println "Ans is: " (+ (* a b c) (* d e f))))
+
+(def partialFunction (partial myFunction 10 20 30))
+(partialFunction 1 2 3)
+
+;In above example the call (partial myFunction 10 20 30) returns a new function
+;which now accepts remaining 3 arguments and finishes the task of myFunction
+;with all 6 arguments
+
 ;;Anonymous function
 ;;===================
 ;We have seen anonymous functions before. In the explanation of keyword 'defn'
