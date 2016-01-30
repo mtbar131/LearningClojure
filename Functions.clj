@@ -219,3 +219,21 @@
 
 
 
+;;Scope
+;;=========
+;Clojure offers two types of scopes: Lexical (Compile time) and Dynamic
+;Lexical scope is same as the scope provided by languages like JAVA
+;Dynamic scoping is bit different
+
+;Lexical scope
+;Variables can be define in two ways in clojure
+(def VARIABLE1 10) 
+(println VARIABLE1)
+;Now VARIABLE1 will be available to all parts of the program
+;We can also declare the variable and assign value later(during runtime)
+;like below. For that we need to declare variable as dynamic
+(declare ^:dynamic SOME_VARIABLE)
+(binding [SOME_VARIABLE 20]
+  ( ;; other code
+))
+
