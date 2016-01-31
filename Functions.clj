@@ -232,8 +232,40 @@
 ;Now VARIABLE1 will be available to all parts of the program
 ;We can also declare the variable and assign value later(during runtime)
 ;like below. For that we need to declare variable as dynamic
-(declare ^:dynamic SOME_VARIABLE)
-(binding [SOME_VARIABLE 20]
-  ( ;; other code
-))
+(declare ^:dynamic *DB_SERVER*)
 
+(binding [*DB_SERVER* "localhost"]
+  (println "DB server @:" *DB_SERVER*)
+  (binding [*DB_SERVER* "128.1.1.9"]
+    (println "DB server @:" *DB_SERVER*))
+  (println "DB server @:" *DB_SERVER*))
+
+;If we run above code we can see that output looks like4
+;; DB server @: localhost
+;; DB server @: 128.1.1.9
+;; DB server @: localhost
+;look carefully at the values of DB_SERVER. As soon as the block of 2nd 
+;binding gets over the DB_SERVER returns to the value of previous block.
+;we can nest any number of such binding blocks
+;Generally dynamic variables are names in between '*' to specify its dynamic
+
+;Dynamic binding needs to be used very carefully when it comes to lazy sequences
+(def ^:dynamic *FACTOR* 10)
+(defn multiply [a]
+  (* a *FACTOR*))
+;Above we have defined a multiplication factors as dynamic and set its value to
+;10 and written a function which will multiply a given number with that factor.
+(binding [*FACTOR* 20]
+  (map multiply [1 2 3 4 5]))
+;In above code the initial value of *FACTOR* was 10 we then changed it to 20
+;using a binding and in the same binding we mapped our multiply function to a
+;list. At that point value of factor is 20 so answer should be 
+;[20, 40, 60 80, 100] but answer it gives is [10, 20, 30, 40, 50]. This is due
+;to the fact that its a lazy sequence. Clojure tries to calculate its value
+;only when needed (in our case while printing it). At that time the value of
+;*FACTOR* is again back to 10 and hence we get this answer. To get the correct
+;answer we need to force the realization of lazy sequence using "doall" 
+;construct from withing binding block as follows
+(binding [*FACTOR* 30]
+  (doall (map multiply [1 2 3 4 5])))
+;this will produce correct answer as [30, 60, 90, 120, 150]
