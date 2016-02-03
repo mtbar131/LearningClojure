@@ -269,3 +269,12 @@
 (binding [*FACTOR* 30]
   (doall (map multiply [1 2 3 4 5])))
 ;this will produce correct answer as [30, 60, 90, 120, 150]
+
+;;Let form
+;;===================
+;Defining a function locally
+(defn makeAllNamesUpperCase [nameList]
+  (let [upperCase (fn [name]
+                    (.toUpperCase name))]
+    (map upperCase nameList)))
+        
