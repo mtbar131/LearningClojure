@@ -41,6 +41,14 @@
 (do
 (println "X is" x "Starting basic configuration process")))
 
+;cond statement in clojure - like a switch case in java
+(def x 101)
+(cond 
+  (= x 0) (println "X is zero")
+  (< x 0) (println "X is negative")
+  (> x 0) (println "X is positive"))
+
+
 ;In clojure nil and false represent false value evertything else
 ;is considered as true
 (if "Some string which is considered as true"
@@ -113,6 +121,105 @@
 (vector "vector" "of few" "string" "&" "a map" {:key "value"})
 
 ;conj is a function which can be used to add elements to the end
-;of the vector
-(conj [1 2 3] 10)
-(println (get aSimpleVector 5))
+;of the vector. However remember that is creates a new vector
+;and returns it. See output of below example to understand 
+;the difference
+(def aNewVector (conj aSimpleVector 10))
+(println "Original vector:" aSimpleVector)
+(println "Newly created vector:" aNewVector)
+
+;Lists in clojure
+;Lists are similar to vectors. They can be used to store any type
+;of data. To create list simply start it with a single quote
+;Example
+(def aList '(1 2 "sdfj" "string" {"tuple" "here"}))
+(println aList)
+;to get nth element of list use 'nth' function
+(println (nth aList 3))
+;similar to maps 'conj' function can be used to add element
+;at the beginning of the list
+(def newList (conj aList 1000))
+(println newList)
+
+
+;Set in clojure
+;Set is nothing but a collection of unique values (of any datatype)
+;There are two types of set in clojure 'Hash-set' and 'sorted-set'
+;To create a hash-set use #{} or hash-set function
+(def aHashSet #{"Name" 20 18121.15 {"t" 1} {:key "value"
+                              :key2 "value2"}})
+(def oneMoreHashSet (hash-set 1 2 "data" {1 2} {1 2}))
+(println aHashSet)
+(println oneMoreHashSet)
+;In above example notice how a tuple that was added twice is stored 
+;only once
+;Conj function can be again used to add a new value to a set
+(def newSet (conj aHashSet "somemoreData"))
+(println newSet)
+
+;contains? can be used to check if the element is present in the 
+;set or not
+(println (contains? newSet {"t" 1}))
+;We can also use the get function to get the value from the set
+;if it exists.
+(println (get newSet "somemoreData"))
+;Above will return "somemoreData"
+
+
+;Loops in clojure - known as 'functional iterations'
+;while loop - general structure is as follows
+;; (while (condition) (body))
+;Examle
+;For while condition to be false some side effect is necessary
+;Will add example later
+
+
+;For loop is generally achieved using recursion
+;Basic structure for loop construct in clojure
+;; (loop (bindings) (body)
+;Example: Calculating factorial
+
+(defn myFactorial [n]
+  (loop [current n 
+         fact 1]
+    (if (= current 1)
+      fact
+      (recur (dec current) (* fact current)))))
+;First after loop keyword we assign current the value of n
+;and fact the value of 1. Then comes the body of the loop
+(println (myFactorial 10))
+
+
+;Above constructs are not very easy to use. Clojure provides macros for
+;looping 
+;DOSEQ
+;If we have a vectors and we need to do some function for each element of the
+;vector we can use DOSEQ
+;Basic form is as follows
+;; (doseq [elem vector])
+;elem is the variable which represents some value from the vector at a 
+;particular iteration
+(doseq [x [1 2 3 4 5]]
+  (println "Iteration value: " x))
+
+;DOTIMES
+;; (dotimes [x n])
+;do times will accept a symbol x and run the loop for all values
+;of that symbol upto n-1. To roughly convert in traditional java
+;for loop. x is 'i' n is the i <= LIMIT condition.
+(defn count-numbers-till [n]
+  (dotimes [x n]
+    (println x)))
+
+(defn myTest [lst]
+  (loop [len (count lst)
+         i 2
+         output [(get lst 1)]]
+    (if (odd? i)
+      (do
+      (conj output (get lst i))
+      (dec i)))
+      output))
+  
+
+  
