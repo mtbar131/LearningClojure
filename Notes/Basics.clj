@@ -1,4 +1,4 @@
-;;Basic clojure operations such as loop, some string operations,
+;;Basic clojure operations such as if-else, loop, some string operations,
 ;;mostly used functions etc.
 
 ;str - concats a string
@@ -109,6 +109,10 @@
 (println (:countries aNestedMap))
 (println (:2 oneMoreNestedMap))
 
+(def aMap 
+  {:1 {:test "value"}
+   :2 {:test2 "value2"}})
+(println (:test2 aMap))
 ;Vectors
 ;Vectors can be used to store elements of any type. These 
 ;elements can be accessed using 0-based indexing
