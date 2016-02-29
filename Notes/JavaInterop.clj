@@ -72,3 +72,9 @@
 ;Note: If methods take argument then we have to put them inside
 ;paranthesis and add arguments as follows
 (.. Calendar getInstance (getTimeZone) (getDisplayName))
+
+;;memfn function in clojure
+;;==================================
+;suppose we want to use java getByets function on some variable. Since its a java function 
+;we can not directly call it. We will have to do is as follows:
+(map (fn [x] (.getBytes x)) [1 2 3])
